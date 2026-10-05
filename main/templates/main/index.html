@@ -34,7 +34,7 @@
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
     <div class="nav-menu" id="nav-menu">
       <a href="#about">About</a><a href="#programmes">Programs</a><a href="#team">Team</a><a href="#impact">Impact</a><a href="#news">News</a><a href="#contact">Contact</a>
-      <a class="nav-cta" href="#support">Donate <span>↗</span></a>
+      <a class="nav-cta" href="#support">Donate <span>↗︎</span></a>
     </div>
   </nav>
 </header>
@@ -48,7 +48,7 @@
         <p class="eyebrow light reveal" id="hero-typing" aria-hidden="true">YOUTH-LED • REGISTERED NGO • TANZANIA MAINLAND</p>
         <h1 class="reveal delay-1">Healthier communities. <em>Sustainable development.</em></h1>
         <p class="hero-text reveal delay-2">{{ organization.description|default:"CCDO exists to improve community health, well-being, and empowerment through inclusive and sustainable development initiatives." }}</p>
-        <div class="hero-actions reveal delay-3"><a class="btn btn-primary" href="#programmes">Explore our programs <span>→</span></a><a class="btn btn-ghost" href="#about">Who we are <span>↗</span></a></div>
+        <div class="hero-actions reveal delay-3"><a class="btn btn-primary" href="#programmes">Explore our programs <span>→</span></a><a class="btn btn-ghost" href="#about">Who we are <span>↗︎</span></a></div>
         <div class="hero-mini-stats reveal delay-4">
           <div><strong>{% if organization.registration_date %}{{ organization.registration_date|date:"Y" }}{% elif organization.established_year %}{{ organization.established_year }}{% else %}—{% endif %}</strong><span>Registered</span></div>
           <div><strong>{{ programs|length }}</strong><span>Core programs</span></div>
@@ -99,7 +99,7 @@
             <p>{{ forloop.counter|stringformat:"02d" }} / {{ program.name|upper }}</p>
             <h3>{{ program.name }}</h3>
             <small>{{ program.short_description }}</small>
-            <span class="card-arrow">↗</span>
+            <span class="card-arrow">↗︎</span>
           </div>
         </article>
         {% empty %}
@@ -112,7 +112,7 @@
           </div>
         </article>
         {% endfor %}
-        <article class="programme-card reveal"><div class="programme-content solid-card" style="inset:0;padding:28px 24px;display:flex;flex-direction:column;justify-content:center"><span class="icon-chip">↗</span><p style="color:var(--cyan-2)">PROGRAMME PRINCIPLE</p><h3>Evidence-based community interventions</h3><small>Working closely with communities and partners to promote sustainable development, healthy behaviours and equitable access to essential health information and services.</small></div></article>
+        <article class="programme-card reveal"><div class="programme-content solid-card" style="inset:0;padding:28px 24px;display:flex;flex-direction:column;justify-content:center"><span class="icon-chip">↗︎</span><p style="color:var(--cyan-2)">PROGRAMME PRINCIPLE</p><h3>Evidence-based community interventions</h3><small>Working closely with communities and partners to promote sustainable development, healthy behaviours and equitable access to essential health information and services.</small></div></article>
         <article class="programme-card reveal"><div class="programme-content solid-card dark-card" style="inset:0;padding:28px 24px;display:flex;flex-direction:column;justify-content:center"><span class="icon-chip">+</span><p>WHERE WE WORK</p><h3>{{ regions_display|default:"Tanzania Mainland" }}</h3><small>{{ organization.acronym|default:"CCDO" }} currently works in {{ regions_display|default:"Tanzania Mainland" }}, with the organization positioned to expand its work as programmes and partnerships develop.</small></div></article>
       </div>
     </div>
@@ -215,16 +215,16 @@
       {% for project in projects %}
       <article class="news-card{% if forloop.first %} large{% endif %} reveal delay-{{ forloop.counter0 }}">
         <div class="news-image"><img src="{{ project.featured_image|img_url:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1100&q=85' }}" alt="{{ project.name }}" loading="lazy"><span class="news-tag">{{ project.get_status_display|upper }}</span></div>
-        <div class="news-copy"><span>{{ project.program.name|upper }}</span><h3>{{ project.name }}</h3><p>{{ project.summary }}</p><a href="#programme-detail">View project ↗</a></div>
+        <div class="news-copy"><span>{{ project.program.name|upper }}</span><h3>{{ project.name }}</h3><p>{{ project.summary }}</p><a href="#programme-detail">View project ↗︎</a></div>
       </article>
       {% endfor %}
     </div>
     {% else %}
     <div class="career-card reveal"><div class="career-orbit"><span></span><span></span><span></span></div><div class="career-copy"><p class="eyebrow light">OUR PROJECTS</p><h2>A growing portfolio of community projects.</h2><p>As {{ organization.acronym|default:"CCDO" }}'s programmes move into implementation, individual projects will be profiled here — with objectives, locations, partners and results — so our work stays transparent and easy to follow.</p></div><div class="career-number"><span>01</span><small>featured programme</small></div></div>
     <div class="resource-grid project-placeholder" style="margin-top:22px">
-      <div class="resource-card reveal"><span>01</span><div><strong>Project profiles</strong><small>Objectives, activities, locations, partners and results for each project.</small></div><b>↗</b></div>
-      <div class="resource-card reveal delay-1"><span>02</span><div><strong>Project documents</strong><small>Supporting documents and reports, published as projects go live.</small></div><b>↗</b></div>
-      <div class="resource-card reveal delay-2"><span>03</span><div><strong>Project updates</strong><small>Field stories and progress updates as activities develop.</small></div><b>↗</b></div>
+      <div class="resource-card reveal"><span>01</span><div><strong>Project profiles</strong><small>Objectives, activities, locations, partners and results for each project.</small></div><b>↗︎</b></div>
+      <div class="resource-card reveal delay-1"><span>02</span><div><strong>Project documents</strong><small>Supporting documents and reports, published as projects go live.</small></div><b>↗︎</b></div>
+      <div class="resource-card reveal delay-2"><span>03</span><div><strong>Project updates</strong><small>Field stories and progress updates as activities develop.</small></div><b>↗︎</b></div>
     </div>
     {% endif %}
   </div></section>
@@ -247,16 +247,16 @@
 
   <!-- NEWS & EVENTS -->
   <section class="section news" id="news"><div class="container"><div class="section-heading reveal"><div><p class="eyebrow">NEWS &amp; UPDATES</p><h2>What is happening at {{ organization.acronym|default:"CCDO" }}</h2></div>
-    {% for link in social_links %}{% if "instagram" in link.platform|lower %}<a class="text-link" href="{{ link.url }}" target="_blank" rel="noopener">Follow Instagram <span>↗</span></a>{% endif %}{% endfor %}
+    {% for link in social_links %}{% if "instagram" in link.platform|lower %}<a class="text-link" href="{{ link.url }}" target="_blank" rel="noopener">Follow Instagram <span>↗︎</span></a>{% endif %}{% endfor %}
     </div>
     <div class="news-grid">
       {% for article in news_list %}
       <article class="news-card{% if forloop.first %} large{% endif %} reveal delay-{{ forloop.counter0 }}">
         <div class="news-image"><img src="{{ article.featured_image|img_url:'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1100&q=85' }}" alt="{{ article.title }}" loading="lazy"><span class="news-tag">{{ article.published_at|date:"M Y" }}</span></div>
-        <div class="news-copy"><span>{{ article.author.full_name|default:organization.acronym }}</span><h3>{{ article.title }}</h3><p>{{ article.excerpt }}</p><a href="#contact">Read more ↗</a></div>
+        <div class="news-copy"><span>{{ article.author.full_name|default:organization.acronym }}</span><h3>{{ article.title }}</h3><p>{{ article.excerpt }}</p><a href="#contact">Read more ↗︎</a></div>
       </article>
       {% empty %}
-      <article class="news-card large reveal"><div class="news-image"><img src="{% static 'images/community-leaders.jpeg' %}" alt="Community engagement" loading="lazy"><span class="news-tag green">LAUNCH</span></div><div class="news-copy"><span>{{ organization.registration_date|date:"Y" }}</span><h3>{{ organization.acronym|default:"CCDO" }} is now registered and active</h3><p>Follow along here as programmes, partnerships and community activities roll out.</p><a href="#contact">Contact {{ organization.acronym|default:"CCDO" }} ↗</a></div></article>
+      <article class="news-card large reveal"><div class="news-image"><img src="{% static 'images/community-leaders.jpeg' %}" alt="Community engagement" loading="lazy"><span class="news-tag green">LAUNCH</span></div><div class="news-copy"><span>{{ organization.registration_date|date:"Y" }}</span><h3>{{ organization.acronym|default:"CCDO" }} is now registered and active</h3><p>Follow along here as programmes, partnerships and community activities roll out.</p><a href="#contact">Contact {{ organization.acronym|default:"CCDO" }} ↗︎</a></div></article>
       {% endfor %}
     </div>
   </div></section>
@@ -268,12 +268,12 @@
       <a class="resource-card reveal delay-{{ forloop.counter0 }}" href="{{ event.registration_url|default:'#contact' }}"{% if event.registration_url %} target="_blank" rel="noopener"{% endif %}>
         <span>{{ event.start_datetime|date:"d M" }}</span>
         <div><strong>{{ event.title }}</strong><small>{% if event.location %}{{ event.location }}{% endif %}{% if event.registration_required %} • Registration required{% endif %}</small></div>
-        <b>↗</b>
+        <b>↗︎</b>
       </a>
       {% empty %}
-      <div class="resource-card reveal"><span>EVENT</span><div><strong>Upcoming events</strong><small>Dates, locations and registration details, published ahead of each event.</small></div><b>↗</b></div>
-      <div class="resource-card reveal delay-1"><span>CAMPAIGN</span><div><strong>Campaigns</strong><small>Stories and calls to action from {{ organization.acronym|default:"CCDO" }}'s active campaigns.</small></div><b>↗</b></div>
-      <div class="resource-card reveal delay-2"><span>CALENDAR</span><div><strong>Community calendar</strong><small>A running calendar of activities across {{ regions_display|default:"Tanzania Mainland" }}.</small></div><b>↗</b></div>
+      <div class="resource-card reveal"><span>EVENT</span><div><strong>Upcoming events</strong><small>Dates, locations and registration details, published ahead of each event.</small></div><b>↗︎</b></div>
+      <div class="resource-card reveal delay-1"><span>CAMPAIGN</span><div><strong>Campaigns</strong><small>Stories and calls to action from {{ organization.acronym|default:"CCDO" }}'s active campaigns.</small></div><b>↗︎</b></div>
+      <div class="resource-card reveal delay-2"><span>CALENDAR</span><div><strong>Community calendar</strong><small>A running calendar of activities across {{ regions_display|default:"Tanzania Mainland" }}.</small></div><b>↗︎</b></div>
       {% endfor %}
     </div>
   </div></section>
@@ -294,17 +294,17 @@
   <section class="section transparency" id="reports"><div class="container"><div class="section-heading centered reveal"><p class="eyebrow">REPORTS &amp; PUBLICATIONS</p><h2>Public information and documents</h2><p>{% if documents %}Browse {{ organization.acronym|default:"CCDO" }}'s published reports, policies and research below.{% else %}{{ organization.acronym|default:"CCDO" }} will publish reports and publications here as they become available.{% endif %}</p></div>
     <div class="resource-grid">
       {% for doc in documents %}
-      <a class="resource-card reveal delay-{{ forloop.counter0 }}" href="{{ doc.file.url }}" target="_blank" rel="noopener"><span>{{ doc.get_document_type_display|slice:":3"|upper }}</span><div><strong>{{ doc.title }}</strong><small>{{ doc.description|truncatechars:70 }}</small></div><b>↗</b></a>
+      <a class="resource-card reveal delay-{{ forloop.counter0 }}" href="{{ doc.file.url }}" target="_blank" rel="noopener"><span>{{ doc.get_document_type_display|slice:":3"|upper }}</span><div><strong>{{ doc.title }}</strong><small>{{ doc.description|truncatechars:70 }}</small></div><b>↗︎</b></a>
       {% empty %}
-      <a class="resource-card reveal" href="#contact"><span>PDF</span><div><strong>Reports</strong><small>Annual and programme reports will be published here as they're released.</small></div><b>↗</b></a>
-      <a class="resource-card reveal delay-1" href="#contact"><span>DOC</span><div><strong>Publications</strong><small>Research and programme publications will be shared here over time.</small></div><b>↗</b></a>
-      <a class="resource-card reveal delay-2" href="#contact"><span>INFO</span><div><strong>Organization documents</strong><small>Registration and governance documents will be available here soon.</small></div><b>↗</b></a>
+      <a class="resource-card reveal" href="#contact"><span>PDF</span><div><strong>Reports</strong><small>Annual and programme reports will be published here as they're released.</small></div><b>↗︎</b></a>
+      <a class="resource-card reveal delay-1" href="#contact"><span>DOC</span><div><strong>Publications</strong><small>Research and programme publications will be shared here over time.</small></div><b>↗︎</b></a>
+      <a class="resource-card reveal delay-2" href="#contact"><span>INFO</span><div><strong>Organization documents</strong><small>Registration and governance documents will be available here soon.</small></div><b>↗︎</b></a>
       {% endfor %}
     </div>
   </div></section>
 
   <!-- GET INVOLVED -->
-  <section class="section careers" id="get-involved"><div class="container"><div class="career-card reveal"><div class="career-orbit"><span></span><span></span><span></span></div><div class="career-copy"><p class="eyebrow light">GET INVOLVED</p><h2>Participate, volunteer or collaborate.</h2><p>Whether you want to volunteer your time, support a programme, or explore a partnership there's a place for you at {{ organization.acronym|default:"CCDO" }}.</p><div class="hero-actions"><a class="btn btn-outline-light" href="#volunteer">Volunteer <span>↗</span></a><a class="btn btn-ghost" href="#contact">Partner with us <span>→</span></a></div></div><div class="career-number"><span>{{ organization.acronym|default:"CCDO" }}</span><small>community first</small></div></div></div></section>
+  <section class="section careers" id="get-involved"><div class="container"><div class="career-card reveal"><div class="career-orbit"><span></span><span></span><span></span></div><div class="career-copy"><p class="eyebrow light">GET INVOLVED</p><h2>Participate, volunteer or collaborate.</h2><p>Whether you want to volunteer your time, support a programme, or explore a partnership there's a place for you at {{ organization.acronym|default:"CCDO" }}.</p><div class="hero-actions"><a class="btn btn-outline-light" href="#volunteer">Volunteer <span>↗︎</span></a><a class="btn btn-ghost" href="#contact">Partner with us <span>→</span></a></div></div><div class="career-number"><span>{{ organization.acronym|default:"CCDO" }}</span><small>community first</small></div></div></div></section>
 
   <section class="section forms-section" id="volunteer"><div class="container forms-grid">
     <div class="form-panel reveal">
@@ -327,7 +327,7 @@
         <button class="btn btn-primary" type="submit">Subscribe <span>→</span></button>
         <p class="form-status" aria-live="polite"></p>
       </form>
-      <div class="mini-contact"><strong>Prefer direct contact?</strong>{% if organization.email %}<a href="mailto:{{ organization.email }}">{{ organization.email }}</a>{% endif %}{% if organization.phone %}<a href="https://wa.me/{{ organization.phone|cut:'+' }}" target="_blank" rel="noopener">WhatsApp {{ organization.acronym|default:"CCDO" }} ↗</a>{% endif %}</div>
+      <div class="mini-contact"><strong>Prefer direct contact?</strong>{% if organization.email %}<a href="mailto:{{ organization.email }}">{{ organization.email }}</a>{% endif %}{% if organization.phone %}<a href="https://wa.me/{{ organization.phone|cut:'+' }}" target="_blank" rel="noopener">WhatsApp {{ organization.acronym|default:"CCDO" }} ↗︎</a>{% endif %}</div>
     </div>
   </div></section>
 
@@ -378,7 +378,7 @@
         <div class="mini-contact">
           <strong>Contact {{ organization.acronym|default:"CCDO" }}</strong>
           {% if organization.email %}<a href="mailto:{{ organization.email }}">{{ organization.email }}</a>{% endif %}
-          {% if organization.phone %}<a href="https://wa.me/{{ organization.phone|cut:'+' }}" target="_blank" rel="noopener">WhatsApp {{ organization.acronym|default:"CCDO" }} ↗</a>{% endif %}
+          {% if organization.phone %}<a href="https://wa.me/{{ organization.phone|cut:'+' }}" target="_blank" rel="noopener">WhatsApp {{ organization.acronym|default:"CCDO" }} ↗︎</a>{% endif %}
         </div>
       </div>
     </div>
@@ -396,7 +396,7 @@
         {% if organization.address %}<div><span>OFFICE</span><strong>{{ organization.address|linebreaksbr }}</strong></div>{% endif %}
         {% if organization.registration_number %}<div><span>REGISTRATION</span><strong>{{ organization.registration_number }}{% if organization.registration_date %} • {{ organization.registration_date|date:"F Y" }}{% endif %}</strong></div>{% endif %}
       </div>
-      {% if organization.address %}<a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&query={{ organization.address|urlencode }}" target="_blank" rel="noopener">Open map <span>↗</span></a>{% endif %}
+      {% if organization.address %}<a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&query={{ organization.address|urlencode }}" target="_blank" rel="noopener">Open map <span>↗︎</span></a>{% endif %}
     </div>
     <div class="form-panel reveal delay-1">
       <p class="eyebrow">SEND A MESSAGE</p><h2>Contact form</h2>
