@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for ccdo on 2026-10-05T12:43:50+03:00
+# fly.toml app configuration file generated for ccdo-pghfmg on 2026-10-05T16:30:17Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'ccdo'
+app = 'ccdo-pghfmg'
 primary_region = 'sin'
 console_command = '/code/manage.py shell'
 
@@ -25,6 +25,7 @@ console_command = '/code/manage.py shell'
 
 [[vm]]
   memory = '1gb'
+  cpu_kind = 'shared'
   cpus = 1
   memory_mb = 1024
 
