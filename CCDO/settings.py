@@ -83,18 +83,16 @@ WSGI_APPLICATION = 'CCDO.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-if DEBUG:
+if env("DATABASE_URL", default=None):
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+        "default": env.db()
     }
 else:
-    # settings.py
     DATABASES = {
-        # read os.environ['DATABASE_URL']
-        'default': env.db()  
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
 
 
