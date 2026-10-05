@@ -1,0 +1,13 @@
+{% extends "control_panel/base.html" %}
+{% block title %}Delete {{ entry.label }} — CCDO Admin{% endblock %}
+{% block admin_content %}
+<div class="admin-topbar"><h1>Delete {{ entry.label }}</h1></div>
+<div class="admin-card" style="max-width:520px">
+  <p>Are you sure you want to delete <strong>{{ obj }}</strong>? This can't be undone.</p>
+  <form method="post" style="margin-top:18px;display:flex;gap:10px">
+    {% csrf_token %}
+    <button class="btn btn-primary" type="submit" style="background:var(--red)">Delete</button>
+    <a class="btn btn-ghost" href="{% url 'control_panel:panel_list' slug %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}

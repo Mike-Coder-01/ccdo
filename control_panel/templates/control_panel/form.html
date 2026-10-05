@@ -1,0 +1,22 @@
+{% extends "control_panel/base.html" %}
+{% block title %}{% if instance %}Edit{% else %}Add{% endif %} {{ entry.label }} — CCDO Admin{% endblock %}
+{% block admin_content %}
+<div class="admin-topbar">
+  <h1>{% if instance %}Edit{% else %}Add{% endif %} {{ entry.label }}</h1>
+  <a class="text-link" href="{% url 'control_panel:panel_list' slug %}">← Back to list</a>
+</div>
+<div class="admin-card form-panel" style="max-width:640px">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+    <label style="display:block;margin-bottom:16px">
+      {{ field.label }}
+      {{ field }}
+      {% if field.help_text %}<small style="color:var(--muted)">{{ field.help_text }}</small>{% endif %}
+      {% if field.errors %}<small style="color:var(--red)">{{ field.errors|striptags }}</small>{% endif %}
+    </label>
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">Save <span>→</span></button>
+  </form>
+</div>
+{% endblock %}

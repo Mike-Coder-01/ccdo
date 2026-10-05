@@ -1,0 +1,70 @@
+{% load static ccdo_extras %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Admin — CCDO{% endblock %}</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+<style>
+/* Scoped additions for the admin shell only. No new colors — everything
+   below reuses the site's existing CSS variables (--navy, --cyan, --line,
+   --radius, --muted, --red) since a sidebar and data table have no
+   equivalent pattern in the public-facing stylesheet. */
+body{background:var(--paper)}
+.admin-shell{display:flex;min-height:100vh}
+.admin-sidebar{width:250px;flex-shrink:0;background:var(--navy);color:#fff;padding:26px 18px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.admin-sidebar .brand{margin-bottom:26px}
+.admin-nav h5{font-size:9px;letter-spacing:.16em;color:#7d90a3;margin:20px 0 8px;padding:0 10px}
+.admin-nav a{display:block;padding:9px 10px;border-radius:10px;font-size:12px;font-weight:700;color:#c7d3de;margin-bottom:2px;text-decoration:none}
+.admin-nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+.admin-nav a.active{background:var(--cyan);color:#062033}
+.admin-main{flex:1;padding:36px 40px;max-width:1100px}
+.admin-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;gap:16px;flex-wrap:wrap}
+.admin-topbar h1{font:800 26px Manrope,sans-serif;letter-spacing:-.03em;margin:0}
+.admin-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 12px 35px rgba(13,31,51,.06);padding:26px}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px}
+.admin-table th{text-align:left;font-size:10px;letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--line);padding:10px 12px}
+.admin-table td{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle}
+.admin-table tr:hover td{background:#f8fafc}
+.admin-actions a{font-size:11px;font-weight:800;margin-right:12px;color:var(--cyan-2);text-decoration:none}
+.admin-actions a.danger{color:var(--red)}
+.admin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.admin-stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;text-decoration:none;color:inherit;display:block;transition:transform .2s,box-shadow .2s}
+.admin-stat:hover{transform:translateY(-3px);box-shadow:0 12px 25px rgba(13,31,51,.08)}
+.admin-stat strong{display:block;font:800 26px Manrope,sans-serif}
+.admin-stat span{font-size:11px;color:var(--muted)}
+.admin-empty{padding:40px;text-align:center;color:var(--muted)}
+.admin-group-label{font-size:10px;letter-spacing:.14em;color:var(--muted);margin:24px 0 10px;font-weight:800}
+@media(max-width:900px){.admin-shell{display:block}.admin-sidebar{position:relative;width:100%;height:auto}.admin-main{padding:24px}.admin-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <a class="brand" href="{% url 'control_panel:panel_dashboard' %}"><span class="brand-mark">+</span><span class="brand-copy"><strong>CCDO</strong><small>ADMIN PANEL</small></span></a>
+    <nav class="admin-nav">
+      <a href="{% url 'control_panel:panel_dashboard' %}" class="{% if not slug %}active{% endif %}">Dashboard</a>
+      {% for group in panel_group_order %}
+        <h5>{{ group }}</h5>
+        {% for section in panel_nav_groups|get_item:group %}
+          <a href="{% url 'control_panel:panel_list' section.slug %}" class="{% if slug == section.slug %}active{% endif %}">{{ section.label }}</a>
+        {% endfor %}
+      {% endfor %}
+    </nav>
+    <div style="margin-top:30px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1)">
+      <form method="post" action="{% url 'control_panel:panel_logout' %}">{% csrf_token %}<button class="btn btn-ghost" type="submit" style="width:100%">Log out</button></form>
+    </div>
+  </aside>
+  <main class="admin-main">
+    {% if messages %}
+      {% for message in messages %}
+        <p style="padding:10px 14px;border-radius:10px;background:{% if message.tags == 'error' %}#fde8e8{% else %}#e3f9f2{% endif %};color:{% if message.tags == 'error' %}#9c1c1c{% else %}#0b8f6a{% endif %};font-size:13px;margin-bottom:16px">{{ message }}</p>
+      {% endfor %}
+    {% endif %}
+    {% block admin_content %}{% endblock %}
+  </main>
+</div>
+</body>
+</html>

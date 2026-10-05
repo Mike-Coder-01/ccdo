@@ -1,0 +1,58 @@
+{% load static ccdo_extras %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ organization.description|default:'Community Care and Development Organization (CCDO) — improving community health, wellbeing and empowerment through inclusive and sustainable development initiatives in Tanzania Mainland.' }}">
+  <title>{% block title %}{{ organization.acronym|default:"CCDO" }} — {{ organization.name|default:"Community Care and Development Organization" }}{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  {% if organization.favicon %}<link rel="icon" href="{{ organization.favicon.url }}">{% endif %}
+  <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+<body>
+{% if messages %}
+  {# Surfaced inline by each form's .form-status element via JS; kept here as a no-JS fallback. #}
+  <div aria-live="polite" style="position:fixed;top:0;left:0;right:0;z-index:2000">
+    {% for message in messages %}
+      <p style="margin:0;padding:10px 16px;background:{% if message.tags == 'error' %}#ef5360{% else %}#16c5a2{% endif %};color:#fff;text-align:center;font-size:13px">{{ message }}</p>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% block content %}{% endblock %}
+
+<footer class="footer"><div class="container footer-main">
+    <div class="footer-brand">
+      <a class="brand footer-logo" href="#top">
+        {% if organization.logo %}
+          <img src="{{ organization.logo.url }}" alt="{{ organization.acronym }} logo" style="width:37px;height:37px;border-radius:11px;object-fit:cover">
+        {% else %}
+          <span class="brand-mark">+</span>
+        {% endif %}
+        <span class="brand-copy"><strong>{{ organization.acronym|default:"CCDO" }}</strong><small>COMMUNITY CARE</small></span>
+      </a>
+      <p>{{ organization.description|default:"Community Care and Development Organization (CCDO) is a youth-led registered NGO dedicated to improving community health, wellbeing and empowerment through inclusive and sustainable development initiatives." }}</p>
+      <div class="socials">
+        {% for link in social_links %}
+          <a href="{{ link.url }}" target="_blank" rel="noopener" aria-label="{{ link.platform }}">{{ link.platform|social_icon }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    <div><h4>Explore</h4><a href="#about">About {{ organization.acronym|default:"CCDO" }}</a><a href="#programmes">Our programs</a><a href="#projects">Projects</a><a href="#team">Our team</a><a href="#impact">Our impact</a></div>
+    <div><h4>Resources</h4><a href="#news">News</a><a href="#events">Events</a><a href="#gallery">Gallery</a><a href="#reports">Reports &amp; publications</a><a href="#get-involved">Get involved</a></div>
+    <div><h4>Contact</h4>
+      {% if organization.email %}<a href="mailto:{{ organization.email }}">{{ organization.email }}</a>{% endif %}
+      {% if organization.phone %}<a href="tel:{{ organization.phone }}">{{ organization.phone }}</a>{% endif %}
+      {% if organization.address %}<span>{{ organization.address|linebreaksbr }}</span>{% endif %}
+      {% if organization.registration_number %}<small>Registration No. {{ organization.registration_number }}</small>{% endif %}
+    </div>
+    </div><div class="footer-bottom container"><span>© {% now "Y" %} {{ organization.name|default:"Community Care and Development Organization (CCDO)" }}. All rights reserved.</span><span>Tanzania Mainland{% if regions_display %} • {{ regions_display }}{% endif %}</span></div>
+</footer>
+
+<button class="back-top" type="button" aria-label="Back to top">↑</button>
+<script src="{% static 'main/js/main.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{% extends "control_panel/base.html" %}
+{% load ccdo_extras %}
+{% block title %}Dashboard - CCDO Admin{% endblock %}
+{% block admin_content %}
+<div class="admin-topbar"><h1>Dashboard</h1></div>
+{% for group in group_order %}
+<p class="admin-group-label">{{ group|upper }}</p>
+<div class="admin-grid">
+  {% for section in groups|get_item:group %}
+  <a class="admin-stat" href="{% url 'control_panel:panel_list' section.slug %}">
+    <strong>{{ section.count }}</strong>
+    <span>{{ section.label }}</span>
+  </a>
+  {% endfor %}
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "control_panel/base.html" %}
+{% load ccdo_extras %}
+{% block title %}{{ entry.label }} - CCDO Admin{% endblock %}
+{% block admin_content %}
+<div class="admin-topbar">
+  <h1>{{ entry.label }}</h1>
+  {% if not entry.readonly_create %}
+  <a class="btn btn-primary" href="{% url 'control_panel:panel_add' slug %}">Add new <span>+</span></a>
+  {% endif %}
+</div>
+<div class="admin-card">
+  {% if page_obj.object_list %}
+  <table class="admin-table">
+    <thead><tr>{% for field in list_fields %}<th>{{ field|title }}</th>{% endfor %}<th></th></tr></thead>
+    <tbody>
+      {% for obj in page_obj %}
+      <tr>
+        {% for field in list_fields %}<td>{{ obj|get_field:field }}</td>{% endfor %}
+        <td class="admin-actions">
+          <a href="{% url 'control_panel:panel_edit' slug obj.pk %}">Edit</a>
+          <a class="danger" href="{% url 'control_panel:panel_delete' slug obj.pk %}">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if page_obj.has_other_pages %}
+  <div style="margin-top:16px;display:flex;gap:8px">
+    {% if page_obj.has_previous %}<a class="btn btn-ghost" href="?page={{ page_obj.previous_page_number }}">← Prev</a>{% endif %}
+    {% if page_obj.has_next %}<a class="btn btn-ghost" href="?page={{ page_obj.next_page_number }}">Next →</a>{% endif %}
+  </div>
+  {% endif %}
+  {% else %}
+  <div class="admin-empty">
+    No {{ entry.label|lower }} yet.
+    {% if not entry.readonly_create %}<a class="text-link" href="{% url 'control_panel:panel_add' slug %}">Add the first one →</a>{% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
