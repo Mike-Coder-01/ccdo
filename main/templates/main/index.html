@@ -380,7 +380,8 @@
         <div class="mini-contact">
           <strong>Contact {{ organization.acronym|default:"CCDO" }}</strong>
           {% if organization.email %}<a href="mailto:{{ organization.email }}">{{ organization.email }}</a>{% endif %}
-          {% if organization.phone %}<a href="https://wa.me/{{ organization.phone|cut:'+' }}" target="_blank" rel="noopener">WhatsApp {{ organization.acronym|default:"CCDO" }} ↗︎</a>{% endif %}
+          <!-- {% if organization.phone %}<a href="https://wa.me/{{ organization.phone|cut:'+' }}" target="_blank" rel="noopener">WhatsApp {{ organization.acronym|default:"CCDO" }} ↗︎</a>{% endif %} -->
+          {% if organization.phone %}{% with wa=organization.phone|wa_number %}{% if wa %}<a href="https://wa.me/{{ wa }}?text=Hello%20{{ organization.acronym|default:'CCDO'|urlencode }}" target="_blank" rel="noopener">WhatsApp {{ organization.acronym|default:"CCDO" }} ↗︎</a>{% endif %}{% endwith %}{% endif %}
         </div>
       </div>
     </div>

@@ -1,7 +1,20 @@
 from django import template
+import re
+
 
 register = template.Library()
 
+@register.filter
+def wa_number(value, country_code="255"):
+    """Normalize a phone number for wa.me links (digits only, with country code)."""
+    digits = re.sub(r"\D", "", str(value or ""))
+    if digits.startswith("00"):          # 00255...
+        digits = digits[2:]
+    elif digits.startswith("0"):         # 0612...
+        digits = country_code + digits[1:]
+    elif len(digits) == 9:               # 612... (no prefix)
+        digits = country_code + digits
+    return digits
 
 @register.filter
 def img_url(file_field, fallback):
