@@ -31,7 +31,11 @@ DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.fly.dev', 'www.ccdo.co.tz', 'ccdo.co.tz',]
 
-CSRF_TRUSTED_ORIGINS = ['https://*.fly.dev']
+CSRF_TRUSTED_ORIGINS = [
+    "https://ccdo.co.tz",
+    "https://www.ccdo.co.tz",
+    "https://*.fly.dev",
+]
 
 
 # Application definition
