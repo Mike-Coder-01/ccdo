@@ -12,4 +12,5 @@ urlpatterns = [
     path("<slug:slug>/add/", views.generic_form, name="panel_add"),
     path("<slug:slug>/<int:pk>/edit/", views.generic_form, name="panel_edit"),
     path("<slug:slug>/<int:pk>/delete/", views.generic_delete, name="panel_delete"),
+    path("volunteer-applications/<int:pk>/file/<str:field>/", views.volunteer_file, name="volunteer_file"),
 ]

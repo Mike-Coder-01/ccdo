@@ -70,12 +70,19 @@ def _back_to_home(request, anchor):
 
 @require_http_methods(["POST"])
 def submit_volunteer(request):
-    form = VolunteerApplicationForm(request.POST)
+    form = VolunteerApplicationForm(request.POST, request.FILES)
     if form.is_valid():
         form.save()
-        messages.success(request, "Thanks — your volunteer application has been received.")
+        messages.success(request, "Thanks, your volunteer application has been received.")
     else:
-        messages.error(request, "Please check the form and try again.")
+        # Show the first specific error, e.g. "File must be 5 MB or smaller."
+        first_error = next(
+            (err for errors in form.errors.values() for err in errors), None
+        )
+        messages.error(
+            request,
+            first_error or "Please check the form and try again.",
+        )
     return _back_to_home(request, "volunteer")
 
 

@@ -9,6 +9,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from .panel_registry import PANEL_REGISTRY, GROUP_ORDER
 
+import os
+from django.http import Http404, FileResponse
+from django.urls import reverse
+from django.utils.text import slugify
+from main.models import VolunteerApplication
+
 
 def staff_check(user):
     return user.is_active and user.is_staff
@@ -94,3 +100,19 @@ def generic_delete(request, slug, pk):
         messages.success(request, f"{entry['label']} deleted.")
         return redirect("control_panel:panel_list", slug=slug)
     return render(request, "control_panel/confirm_delete.html", {"entry": entry, "slug": slug, "obj": obj})
+
+ALLOWED_FILE_FIELDS = {"application_letter", "cv"}
+
+
+@login_required(login_url="control_panel:panel_login")
+@user_passes_test(staff_check, login_url="control_panel:panel_login")
+def volunteer_file(request, pk, field):
+    if field not in ALLOWED_FILE_FIELDS:
+        raise Http404
+    app = get_object_or_404(VolunteerApplication, pk=pk)
+    f = getattr(app, field)
+    if not f:
+        raise Http404
+    ext = os.path.splitext(f.name)[1]
+    filename = f"{slugify(app.full_name)}-{field}{ext}"
+    return FileResponse(f.open("rb"), filename=filename)

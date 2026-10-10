@@ -1,7 +1,12 @@
 from django.db import models
 from django.db import models
 from django.utils.text import slugify
+import uuid, os
 
+
+def volunteer_upload_path(instance, filename):
+    ext = os.path.splitext(filename)[1].lower()
+    return f"volunteers/{uuid.uuid4().hex}{ext}"
 
 # ---------------------------------------------------------------------------
 # 1. Organization
@@ -382,7 +387,8 @@ class VolunteerApplication(models.Model):
     area_of_interest = models.CharField(max_length=255, blank=True)
     experience = models.TextField(blank=True)
     motivation = models.TextField(blank=True)
-    cv = models.FileField(upload_to="volunteers/cv/", blank=True, null=True)
+    cv = models.FileField(upload_to=volunteer_upload_path, blank=True, null=True)
+    application_letter = models.FileField(upload_to=volunteer_upload_path, blank=True, null=True)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
     submitted_at = models.DateTimeField(auto_now_add=True)
 

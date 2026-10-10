@@ -1,5 +1,9 @@
 from django import forms
 from .models import VolunteerApplication, ContactMessage, NewsletterSubscriber, DonationPledge
+import os
+
+ALLOWED_DOC_EXT = {".pdf", ".doc", ".docx"}
+MAX_DOC_SIZE = 5 * 1024 * 1024  # 5 MB
 
 
 AREA_OF_INTEREST_CHOICES = [
@@ -11,18 +15,41 @@ AREA_OF_INTEREST_CHOICES = [
 ]
 
 
+def _validate_document(f):
+    if f:
+        ext = os.path.splitext(f.name)[1].lower()
+        if ext not in ALLOWED_DOC_EXT:
+            raise forms.ValidationError("Only PDF or Word files (.pdf, .doc, .docx) are allowed.")
+        if f.size > MAX_DOC_SIZE:
+            raise forms.ValidationError("File must be 5 MB or smaller.")
+    return f
+
 class VolunteerApplicationForm(forms.ModelForm):
     area_of_interest = forms.ChoiceField(choices=AREA_OF_INTEREST_CHOICES, required=False)
+    application_letter = forms.FileField(
+        required=True,
+        widget=forms.ClearableFileInput(attrs={"accept": ".pdf,.doc,.docx"}),
+    )
+    cv = forms.FileField(
+        required=True,
+        widget=forms.ClearableFileInput(attrs={"accept": ".pdf,.doc,.docx"}),
+    )
 
     class Meta:
         model = VolunteerApplication
-        fields = ["full_name", "email", "phone", "area_of_interest"]
+        fields = ["full_name", "email", "phone", "area_of_interest", "application_letter", "cv"]
         widgets = {
             "full_name": forms.TextInput(attrs={"placeholder": "Your full name", "required": True}),
             "email": forms.EmailInput(attrs={"placeholder": "you@example.com", "required": True}),
             "phone": forms.TextInput(attrs={"placeholder": "+255..."}),
         }
 
+    def clean_application_letter(self):
+        return _validate_document(self.cleaned_data.get("application_letter"))
+
+    def clean_cv(self):
+        return _validate_document(self.cleaned_data.get("cv"))
+    
 
 class ContactMessageForm(forms.ModelForm):
     class Meta:
@@ -55,3 +82,7 @@ class DonationPledgeForm(forms.ModelForm):
             "phone": forms.TextInput(attrs={"placeholder": "+255..."}),
             "amount": forms.NumberInput(attrs={"placeholder": "e.g. 50000", "min": "1000", "step": "500", "required": True}),
         }
+
+
+
+

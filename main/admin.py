@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from django.utils.html import format_html
 from .models import (
     Organization,
     DonationPledge,
@@ -219,10 +219,13 @@ class VolunteerApplicationAdmin(admin.ModelAdmin):
         "email",
         "phone",
         "area_of_interest",
+        "letter_link",
+        "cv_link",
         "status",
         "submitted_at",
     )
-    list_filter = ("status",)
+    list_filter = ("status", "area_of_interest")
+    list_editable = ("status",)
     search_fields = (
         "full_name",
         "email",
@@ -231,6 +234,26 @@ class VolunteerApplicationAdmin(admin.ModelAdmin):
         "area_of_interest",
     )
     ordering = ("-submitted_at",)
+    readonly_fields = ("submitted_at", "letter_link", "cv_link")
+    date_hierarchy = "submitted_at"
+
+    @admin.display(description="Application letter")
+    def letter_link(self, obj):
+        if obj.application_letter:
+            return format_html(
+                '<a href="{}" target="_blank" rel="noopener">Open</a>',
+                obj.application_letter.url,
+            )
+        return "-"
+
+    @admin.display(description="CV")
+    def cv_link(self, obj):
+        if obj.cv:
+            return format_html(
+                '<a href="{}" target="_blank" rel="noopener">Open</a>',
+                obj.cv.url,
+            )
+        return "-"
 
 
 @admin.register(ContactMessage)

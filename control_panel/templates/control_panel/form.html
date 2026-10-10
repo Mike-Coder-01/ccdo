@@ -5,6 +5,18 @@
   <h1>{% if instance %}Edit{% else %}Add{% endif %} {{ entry.label }}</h1>
   <a class="text-link" href="{% url 'control_panel:panel_list' slug %}">← Back to list</a>
 </div>
+
+{% if file_links %}
+<div class="admin-card" style="max-width:640px;margin-bottom:16px">
+  <strong>Documents</strong>
+  <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+    {% for item in file_links %}
+      <a class="btn btn-primary" href="{{ item.url }}" target="_blank" rel="noopener">{{ item.label }} <span>↗</span></a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
 <div class="admin-card form-panel" style="max-width:640px">
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
