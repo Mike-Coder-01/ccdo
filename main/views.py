@@ -14,6 +14,19 @@ from .forms import (
 )
 
 
+from django.http import HttpResponse
+
+
+def robots_txt(request):
+    content = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "\n"
+        "Sitemap: https://ccdo.co.tz/sitemap.xml\n"
+    )
+    return HttpResponse(content, content_type="text/plain")
+
+
 def home(request):
     organization = Organization.objects.first()
 
