@@ -97,15 +97,72 @@ def submit_contact(request):
     return _back_to_home(request, "contact")
 
 
+
+import logging
+
+from django.conf import settings
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.views.decorators.http import require_http_methods
+
+logger = logging.getLogger(__name__)
+
+
 @require_http_methods(["POST"])
 def submit_newsletter(request):
     form = NewsletterSubscriberForm(request.POST)
+
     if form.is_valid():
-        form.save()
-        messages.success(request, "You're subscribed to CCDO updates.")
+        subscriber = form.save()
+
+        try:
+            greeting = (
+                f"Hello {subscriber.name},"
+                if subscriber.name
+                else "Hello,"
+            )
+
+            send_mail(
+                subject="Welcome to CCDO Updates!",
+                message=(
+                    f"{greeting}\n\n"
+                    "Thank you for subscribing to CCDO updates!\n\n"
+                    "We'll keep you informed about our community "
+                    "development activities, projects, and news.\n\n"
+                    "We're glad to have you in our community.\n\n"
+                    "Best regards,\n"
+                    "CCDO Team"
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[subscriber.email],
+                fail_silently=False,
+            )
+
+            messages.success(
+                request,
+                "You're subscribed! Please check your email "
+                "for a welcome message."
+            )
+
+        except Exception:
+            logger.exception(
+                "Failed to send newsletter email to %s",
+                subscriber.email,
+            )
+
+            messages.success(
+                request,
+                "You're subscribed to CCDO updates."
+            )
+
     else:
-        messages.error(request, "Please enter a valid email address.")
+        messages.error(
+            request,
+            "Please enter a valid email address."
+        )
+
     return _back_to_home(request, "volunteer")
+
 
 
 @require_http_methods(["POST"])
@@ -113,7 +170,7 @@ def submit_donation(request):
     form = DonationPledgeForm(request.POST)
     if form.is_valid():
         form.save()
-        messages.success(request, "Thank you — your donation has been recorded. We'll be in touch to confirm.")
+        messages.success(request, "Thank you - your donation has been recorded. We'll be in touch to confirm.")
     else:
         messages.error(request, "Please check the donation form and try again.")
     return _back_to_home(request, "support")

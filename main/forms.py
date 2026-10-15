@@ -24,31 +24,64 @@ def _validate_document(f):
             raise forms.ValidationError("File must be 5 MB or smaller.")
     return f
 
+
 class VolunteerApplicationForm(forms.ModelForm):
-    area_of_interest = forms.ChoiceField(choices=AREA_OF_INTEREST_CHOICES, required=False)
+    
+    area_of_interest = forms.MultipleChoiceField(
+        choices=AREA_OF_INTEREST_CHOICES,
+        required=False,
+        widget=forms.SelectMultiple(attrs={
+            "class": "interest-select",
+        }),
+    )
+
+
     application_letter = forms.FileField(
         required=True,
-        widget=forms.ClearableFileInput(attrs={"accept": ".pdf,.doc,.docx"}),
+        widget=forms.ClearableFileInput(
+            attrs={"accept": ".pdf,.doc,.docx"}
+        ),
     )
+
     cv = forms.FileField(
         required=True,
-        widget=forms.ClearableFileInput(attrs={"accept": ".pdf,.doc,.docx"}),
+        widget=forms.ClearableFileInput(
+            attrs={"accept": ".pdf,.doc,.docx"}
+        ),
     )
 
     class Meta:
         model = VolunteerApplication
-        fields = ["full_name", "email", "phone", "area_of_interest", "application_letter", "cv"]
+        fields = [
+            "full_name",
+            "email",
+            "phone",
+            "area_of_interest",
+            "application_letter",
+            "cv",
+        ]
         widgets = {
-            "full_name": forms.TextInput(attrs={"placeholder": "Your full name", "required": True}),
-            "email": forms.EmailInput(attrs={"placeholder": "you@example.com", "required": True}),
+            "full_name": forms.TextInput(
+                attrs={"placeholder": "Your full name", "required": True}
+            ),
+            "email": forms.EmailInput(
+                attrs={"placeholder": "you@example.com", "required": True}
+            ),
             "phone": forms.TextInput(attrs={"placeholder": "+255..."}),
         }
 
+    def clean_area_of_interest(self):
+        selected = self.cleaned_data.get("area_of_interest", [])
+        return ", ".join(selected)
+
     def clean_application_letter(self):
-        return _validate_document(self.cleaned_data.get("application_letter"))
+        return _validate_document(
+            self.cleaned_data.get("application_letter")
+        )
 
     def clean_cv(self):
         return _validate_document(self.cleaned_data.get("cv"))
+
     
 
 class ContactMessageForm(forms.ModelForm):

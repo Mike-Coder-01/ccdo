@@ -88,3 +88,41 @@ function typeWordByWordWithCursor(el, {
 document.addEventListener('DOMContentLoaded', () => {
   typeWordByWordWithCursor(document.getElementById('hero-typing'));
 });
+
+
+// VOLUNTEER DROP DOWN FUNCTIONALITY
+
+const dropdown = document.getElementById("interestDropdown");
+const toggle = dropdown.querySelector(".interest-dropdown-toggle");
+const options = document.getElementById("interestOptions");
+const label = document.getElementById("interestLabel");
+const checkboxes = dropdown.querySelectorAll(
+    'input[type="checkbox"]'
+);
+
+toggle.addEventListener("click", () => {
+    const isOpen = !options.hidden;
+    options.hidden = isOpen;
+    toggle.setAttribute("aria-expanded", String(!isOpen));
+});
+
+function updateInterestLabel() {
+    const selected = [...checkboxes].filter(
+        checkbox => checkbox.checked
+    );
+
+    label.textContent = selected.length
+        ? `${selected.length} area(s) selected`
+        : "Select areas of interest";
+}
+
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener("change", updateInterestLabel);
+});
+
+document.addEventListener("click", event => {
+    if (!dropdown.contains(event.target)) {
+        options.hidden = true;
+        toggle.setAttribute("aria-expanded", "false");
+    }
+});

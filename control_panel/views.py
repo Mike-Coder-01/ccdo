@@ -15,6 +15,19 @@ from django.urls import reverse
 from django.utils.text import slugify
 from main.models import VolunteerApplication
 
+import logging
+
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
+from django.views.decorators.http import require_POST
+
+
+logger = logging.getLogger(__name__)
 
 def staff_check(user):
     return user.is_active and user.is_staff
@@ -116,3 +129,108 @@ def volunteer_file(request, pk, field):
     ext = os.path.splitext(f.name)[1]
     filename = f"{slugify(app.full_name)}-{field}{ext}"
     return FileResponse(f.open("rb"), filename=filename)
+
+
+
+@login_required(login_url="control_panel:panel_login")
+@require_POST
+def send_record_email(request, slug, pk):
+    # Only staff members can send emails from the admin panel.
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    # Find the registered model for this admin page.
+    entry = PANEL_REGISTRY.get(slug)
+
+    if entry is None:
+        messages.error(request, "Invalid admin section.")
+        return redirect("control_panel:panel_dashboard")
+
+    model = entry["model"]
+
+    # Retrieve the selected database record.
+    instance = get_object_or_404(model, pk=pk)
+
+    # Ensure the record has an email field and a valid recipient.
+    recipient = getattr(instance, "email", None)
+
+    if not recipient:
+        messages.error(
+            request,
+            "This record does not have an email address."
+        )
+        return redirect(
+            reverse(
+                "control_panel:panel_edit",
+                kwargs={"slug": slug, "pk": pk},
+            )
+        )
+
+    # Read and validate the submitted email content.
+    subject = request.POST.get("subject", "").strip()
+    message_body = request.POST.get("message", "").strip()
+
+    if not subject or not message_body:
+        messages.error(
+            request,
+            "Please provide both an email subject and message."
+        )
+        return redirect(
+            reverse(
+                "control_panel:panel_edit",
+                kwargs={"slug": slug, "pk": pk},
+            )
+        )
+
+    if len(subject) > 200:
+        messages.error(
+            request,
+            "The email subject must not exceed 200 characters."
+        )
+        return redirect(
+            reverse(
+                "control_panel:panel_edit",
+                kwargs={"slug": slug, "pk": pk},
+            )
+        )
+
+    # Send the email using Django's configured email backend.
+    try:
+        sent = send_mail(
+            subject=subject,
+            message=message_body,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[recipient],
+            fail_silently=False,
+        )
+
+        if sent == 1:
+            messages.success(
+                request,
+                f"Email sent successfully to {recipient}."
+            )
+        else:
+            messages.error(
+                request,
+                "The email was not sent. Please check your email settings."
+            )
+
+    except Exception:
+        logger.exception(
+            "Failed to send admin email for %s record %s",
+            slug,
+            pk,
+        )
+        messages.error(
+            request,
+            "Failed to send the email. Check your email configuration "
+            "and server logs."
+        )
+
+    # Return to the record being edited.
+    return redirect(
+        reverse(
+            "control_panel:panel_edit",
+            kwargs={"slug": slug, "pk": pk},
+        )
+    )

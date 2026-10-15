@@ -1,34 +1,124 @@
+
 {% extends "control_panel/base.html" %}
-{% block title %}{% if instance %}Edit{% else %}Add{% endif %} {{ entry.label }} — CCDO Admin{% endblock %}
+
+{% block title %}
+  {% if instance %}Edit{% else %}Add{% endif %} {{ entry.label }} — CCDO Admin
+{% endblock %}
+
 {% block admin_content %}
+
 <div class="admin-topbar">
   <h1>{% if instance %}Edit{% else %}Add{% endif %} {{ entry.label }}</h1>
-  <a class="text-link" href="{% url 'control_panel:panel_list' slug %}">← Back to list</a>
+  <a class="text-link" href="{% url 'control_panel:panel_list' slug %}">
+    ← Back to list
+  </a>
 </div>
 
 {% if file_links %}
 <div class="admin-card" style="max-width:640px;margin-bottom:16px">
   <strong>Documents</strong>
+
   <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
     {% for item in file_links %}
-      <a class="btn btn-primary" href="{{ item.url }}" target="_blank" rel="noopener">{{ item.label }} <span>↗</span></a>
+      <a class="btn btn-primary"
+         href="{{ item.url }}"
+         target="_blank"
+         rel="noopener">
+        {{ item.label }} <span>&#8599;&#65038;</span>
+      </a>
     {% endfor %}
   </div>
 </div>
 {% endif %}
 
+<!-- Edit / Add Form -->
 <div class="admin-card form-panel" style="max-width:640px">
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
+
     {% for field in form %}
-    <label style="display:block;margin-bottom:16px">
-      {{ field.label }}
-      {{ field }}
-      {% if field.help_text %}<small style="color:var(--muted)">{{ field.help_text }}</small>{% endif %}
-      {% if field.errors %}<small style="color:var(--red)">{{ field.errors|striptags }}</small>{% endif %}
-    </label>
+      <label style="display:block;margin-bottom:16px">
+        {{ field.label }}
+        {{ field }}
+
+        {% if field.help_text %}
+          <small style="color:var(--muted)">
+            {{ field.help_text }}
+          </small>
+        {% endif %}
+
+        {% if field.errors %}
+          <small style="color:var(--red)">
+            {{ field.errors|striptags }}
+          </small>
+        {% endif %}
+      </label>
     {% endfor %}
-    <button class="btn btn-primary" type="submit">Save <span>→</span></button>
+
+    <button class="btn btn-primary" type="submit">
+      Save <span>&#8594;</span>
+    </button>
   </form>
 </div>
+
+<!-- Send Email Form -->
+{% if instance and instance.email %}
+<div class="admin-card form-panel"
+     style="max-width:640px;margin-top:24px">
+
+  <h2>Send Email</h2>
+
+  <p style="color:var(--muted);margin-bottom:20px">
+    Compose and send an email to this record's email address.
+  </p>
+
+  <form method="post"
+        action="{% url 'control_panel:send_record_email' slug instance.pk %}">
+
+    {% csrf_token %}
+
+    <label style="display:block;margin-bottom:16px">
+      Recipient
+
+      <input
+        type="email"
+        value="{{ instance.email }}"
+        readonly
+        style="width:100%;box-sizing:border-box"
+      >
+    </label>
+
+    <label style="display:block;margin-bottom:16px">
+      Subject
+
+      <input
+        type="text"
+        name="subject"
+        required
+        maxlength="200"
+        placeholder="Enter email subject"
+        style="width:100%;box-sizing:border-box"
+      >
+    </label>
+
+    <label style="display:block;margin-bottom:16px">
+      Message
+
+      <textarea
+        name="message"
+        rows="8"
+        required
+        placeholder="Write your email here..."
+        style="width:100%;resize:vertical;box-sizing:border-box"
+      ></textarea>
+    </label>
+
+    <button class="btn btn-primary" type="submit">
+      Send Email <span>&#8599;&#65038;</span>
+    </button>
+
+  </form>
+</div>
+{% endif %}
+
 {% endblock %}

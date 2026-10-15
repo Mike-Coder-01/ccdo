@@ -166,7 +166,7 @@
             <div class="detail-row reveal delay-3">
               <span class="detail-index">03</span>
               <div class="detail-row-body">
-                <span class="detail-row-icon">✳</span>
+                <span class="detail-row-icon">&#10037;&#65038;</span>
                 <div>
                   <strong>Key activities</strong>
                   <p>{% firstof featured_project.objectives featured_program.objectives "Community outreach, health education sessions and direct referrals to services." %}</p>
@@ -314,7 +314,34 @@
         <label>Full name{{ volunteer_form.full_name }}</label>
         <label>Email{{ volunteer_form.email }}</label>
         <label>Phone{{ volunteer_form.phone }}</label>
-        <label>Area of interest{{ volunteer_form.area_of_interest }}</label>
+        
+        <div class="interest-dropdown" id="interestDropdown">
+            <button
+                type="button"
+                class="interest-dropdown-toggle"
+                aria-expanded="false"
+                aria-controls="interestOptions"
+            >
+                <span id="interestLabel">Select areas of interest</span>
+                <span aria-hidden="true">⌄</span>
+            </button>
+
+            <div class="interest-dropdown-options" id="interestOptions" hidden>
+                {% for value, label in volunteer_form.fields.area_of_interest.choices %}
+                    <label class="interest-option">
+                        <input
+                            type="checkbox"
+                            name="area_of_interest"
+                            value="{{ value }}"
+                        >
+                        <span>{{ label }}</span>
+                    </label>
+                {% endfor %}
+            </div>
+
+            {{ volunteer_form.area_of_interest.errors }}
+        </div>
+
         <label>Upload application letter <span class="field-hint">PDF or Word, max 5 MB</span>{{ volunteer_form.application_letter }}</label>
         <label>Upload CV <span class="field-hint">PDF or Word, max 5 MB</span>{{ volunteer_form.cv }}</label>
         <button class="btn btn-primary" type="submit">Submit interest <span>→</span></button>
