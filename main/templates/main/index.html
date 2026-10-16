@@ -56,7 +56,7 @@
         </div>
       </div>
       <div class="hero-visual reveal delay-2">
-        <div class="hero-main-image image-wrap"><img src="{% static 'images/community-leaders.jpeg' %}" alt="CCDO members working together"></div>
+        <div class="hero-main-image image-wrap"><img src="{% static 'images/community-leaders.jpeg' %}" alt="CCDO members working together" loading="lazy"></div>
         <div class="floating-card card-top"><span class="status-dot"></span><div><strong>Registered NGO</strong><small>No. {{ organization.registration_number }}{% if organization.registration_date %} • {{ organization.registration_date|date:"F Y" }}{% endif %}</small></div></div>
         <div class="floating-card card-bottom"><span class="mini-icon">+</span><div><strong>Community-based action</strong><small>Health • Environment • HIV/AIDS</small></div></div>
         <div class="hero-ring"></div>

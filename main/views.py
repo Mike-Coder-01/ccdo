@@ -1,7 +1,10 @@
+import logging
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
-
+from django.views.decorators.cache import cache_page
+from django.conf import settings
+from django.core.mail import send_mail
 from .models import (
     Organization, TeamMember, Program, Project, Beneficiary, Partner,
     News, Event, GalleryAlbum, Document, DonationMethod, SocialLink,
@@ -13,9 +16,9 @@ from .forms import (
     NewsletterSubscriberForm, DonationPledgeForm,
 )
 
-
 from django.http import HttpResponse
 
+logger = logging.getLogger(__name__)
 
 def robots_txt(request):
     content = (
@@ -27,6 +30,7 @@ def robots_txt(request):
     return HttpResponse(content, content_type="text/plain")
 
 
+@cache_page(60 * 15)
 def home(request):
     organization = Organization.objects.first()
 
@@ -109,16 +113,6 @@ def submit_contact(request):
         messages.error(request, "Please check the form and try again.")
     return _back_to_home(request, "contact")
 
-
-
-import logging
-
-from django.conf import settings
-from django.core.mail import send_mail
-from django.contrib import messages
-from django.views.decorators.http import require_http_methods
-
-logger = logging.getLogger(__name__)
 
 
 @require_http_methods(["POST"])
